@@ -33,6 +33,7 @@ jaraco.functools
 Jinja2
 jmespath
 joblib
+json
 keyring
 kiwisolver
 lightkurve

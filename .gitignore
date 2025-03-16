@@ -14,5 +14,5 @@ dist/
 build/
 
 # User ignores
-/Downloaded data/
+/data
 /Jupyter test documents/Downloaded data/
