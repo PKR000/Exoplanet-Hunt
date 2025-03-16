@@ -1,2 +1,18 @@
+# Standard python ignores
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv
+.env/
+.venv/
+.idea/
+.vscode/
+*.egg-info/
+dist/
+build/
+
+# User ignores
 /Downloaded data/
 /Jupyter test documents/Downloaded data/

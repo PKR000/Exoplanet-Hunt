@@ -1,2 +1,3 @@
-from .fetch_data import fetch_kepler_data
-from .read_data import read_kepler_data
+# This file makes the src directory a package.
+from .main import main
+# Add other imports as needed
