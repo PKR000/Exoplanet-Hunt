@@ -32,6 +32,16 @@ Alternatively, you can install the dependencies directly using:
 pip install -r requirements.txt
 ```
 
+### Using setup.py
+
+The `setup.py` file is used for packaging and distributing the project. It includes information about the package and its dependencies. To install the package using `setup.py`, run:
+
+```bash
+python setup.py install
+```
+
+This will install the package and its dependencies as defined in `setup.py`.
+
 ## Usage
 
 To run the main application, use:
