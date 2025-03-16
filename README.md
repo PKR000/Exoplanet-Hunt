@@ -10,14 +10,14 @@ It is recommended to use a virtual environment to manage dependencies. To create
 
 ```bash
 python -m venv exoplanet-env
-venv\Scripts\activate
+exoplanet-env\Scripts\activate
 ```
 
 ### On macOS and Linux
 
 ```bash
 python3 -m venv exoplanet-env
-source venv/bin/activate
+source exoplanet-env/bin/activate
 ```
 
 Then, to install the package and required dependencies, run:
