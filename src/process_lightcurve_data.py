@@ -90,27 +90,29 @@ def create_fits_path_list(tic_id):
     except Exception as e:
         print(f"An error occurred while creating the FITS file path list: {e}")
     
-
-
 def lightcurve_analysis(tic_id):
+    """
+    Analyzes the light curves for a given TIC ID.
+
+    Parameters:
+    tic_id (str): The TIC ID of the star.
+    """
     fits_files_list = create_fits_path_list(tic_id)
+    if fits_files_list is None:
+            return
+
     for file in fits_files_list:
-    
         try:
             lc = lk.read(file)
             if isinstance(lc, lk.lightcurve.TessLightCurve):
-                print("lightcurve found.")
+                print("Lightcurve found.")            
                 lc.plot()
                 plt.show()
-
             else:
                 print(f"Error: The file provided at {file} is not a TESS lightcurve file.")
                 return None
-
-
         except Exception as e:
-            print(f"An error occurred while reading the lightcurve file: {e}")
-            return None
+            print(f"An error occurred while processing the file {file}: {e}")
 
 
 '''
@@ -127,4 +129,5 @@ plt.show()
 '''
 
 
-print(create_fits_path_list("261136679"))
+# print(create_fits_path_list("261136679"))
+lightcurve_analysis(261136679)
