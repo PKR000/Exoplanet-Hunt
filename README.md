@@ -9,14 +9,14 @@ It is recommended to use a virtual environment to manage dependencies. To create
 ### On Windows
 
 ```bash
-python -m venv venv
+python -m venv exoplanet-env
 venv\Scripts\activate
 ```
 
 ### On macOS and Linux
 
 ```bash
-python3 -m venv venv
+python3 -m venv exoplanet-env
 source venv/bin/activate
 ```
 
