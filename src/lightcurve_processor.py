@@ -100,7 +100,13 @@ class LightCurveProcessor:
             periodogram.plot()
             best_fit = periodogram.period_at_max_power
             print('Best fit period: {:.5f}'.format(best_fit))
-            
+
+            #Scores the periodogram based on the ratio of the highest peak to the average power
+            max_power = periodogram.power.max()
+            average_power = np.mean(periodogram.power)
+            ratio = max_power / average_power
+            print("Periodogram Ratio:", ratio)
+
             # Fold the light curve to show the transit            
             folded_lc = flat_lc.fold(period=best_fit)
             
