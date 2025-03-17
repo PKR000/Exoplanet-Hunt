@@ -118,7 +118,9 @@ if __name__ == "__main__":
     handler = TESSDataHandler()
     
     # Test search_tess_targets method
-    test_target = handler.search_tess_targets((5991, 5993), (18, 19))
+    test_temp = (5991, 5993)
+    test_dist = (18, 19)
+    test_target = handler.search_tess_targets(test_temp, test_dist)
     print(test_target)
     
     if test_target:
@@ -136,3 +138,50 @@ if __name__ == "__main__":
         
         # Test output_stars_data method
         handler.output_stars_data()  # Example of using the public method to output stars data
+
+
+
+#sorry David, didnt know where to put this code yet.
+#also im keeping a to-do list here for now
+        
+#to-do: we need a score function that tells us the chance we found an exoplanet.
+#to-do: we need a function that increments through temp/dist ranges and downloads relevant data.
+#to-do: we need to log tested stars, and ranges we have gone through.
+#to-do: we might consider saving graphs of processed data, once we have confidence in the output.
+
+#this is entirely untested
+def save_state(temp_range, dist_range, analyzed_tic_ids, filename='processed_data.json'):
+    
+    # Initialize state
+    state = {
+        'temperature_range': temp_range,
+        'distance_range': dist_range,
+        'analyzed_tic_ids': analyzed_tic_ids
+    }
+    
+    # Read existing state if the file exists
+    if os.path.exists(filename):
+        with open(filename, 'r') as file:
+            existing_state = json.load(file)
+            
+            # Update tested temperature range
+            existing_temp_range = existing_state['temperature_range']
+            state['temperature_range'] = (
+                min(existing_temp_range[0], temp_range[0]),
+                max(existing_temp_range[1], temp_range[1])
+            )
+            
+            # Update tested distance range
+            existing_dist_range = existing_state['distance_range']
+            state['distance_range'] = (
+                min(existing_dist_range[0], dist_range[0]),
+                max(existing_dist_range[1], dist_range[1])
+            )
+            
+            # Update analyzed TIC IDs
+            state['analyzed_tic_ids'] = list(set(existing_state['analyzed_tic_ids']).union(set(analyzed_tic_ids)))
+
+    # Write the updated state to the JSON file
+    with open(filename, 'w') as file:
+        json.dump(state, file, indent=4)
+
