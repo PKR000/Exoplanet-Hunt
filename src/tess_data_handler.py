@@ -113,6 +113,8 @@ class TESSDataHandler:
             json.dump({"with_timeseries": list(self.stars_data["with_timeseries"]),
                        "without_timeseries": list(self.stars_data["without_timeseries"])}, file)
 
+#commented out for testing
+'''
 if __name__ == "__main__":
     # Example usage
     handler = TESSDataHandler()
@@ -138,7 +140,7 @@ if __name__ == "__main__":
         
         # Test output_stars_data method
         handler.output_stars_data()  # Example of using the public method to output stars data
-
+'''
 
 
 #sorry David, didnt know where to put this code yet.
@@ -150,7 +152,7 @@ if __name__ == "__main__":
 #to-do: we might consider saving graphs of processed data, once we have confidence in the output.
 
 #this is entirely untested
-def save_state(temp_range, dist_range, analyzed_tic_ids, filename='processed_data.json'):
+def save_state(temp_range, dist_range, analyzed_tic_ids, filename='saved_state.json'):
     
     # Initialize state
     state = {
