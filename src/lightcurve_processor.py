@@ -35,6 +35,18 @@ class LightCurveProcessor:
             print(f"An error occurred while creating the FITS file path list: {e}")
             return []
 
+    def log_analysis_results(self):
+        """
+        Logs the analysis results to a JSON file.
+        """
+        
+        log_data = {
+            "tic_id": self.tic_id,
+            "num_files_analyzed": len(self.fits_files_list),
+            "status": "completed"
+        }
+        log_file_path = os.path.join(self.data_dir, f"TIC_{self.tic_id}", "analysis_log.json")
+
     def analyze_lightcurves(self):
         """
         Analyzes the light curves for the given TIC ID.
@@ -44,6 +56,7 @@ class LightCurveProcessor:
 
         for file in self.fits_files_list:
             self.analyze_single_lightcurve(file)
+        self.log_analysis_results()
 
     def analyze_single_lightcurve(self, file: str):
         """
@@ -84,8 +97,7 @@ class LightCurveProcessor:
         try:
             lc = lc.remove_nans().remove_outliers(sigma=4)
             lc.plot(title="outliers removed")
-            lc.
-
+            
             # Calculate window length
             window_length = self.calculate_window_length(lc, 0.1)
             print(f"Window length: {window_length}")
@@ -115,6 +127,10 @@ class LightCurveProcessor:
             
             # Plot the processed light curve
             binned_lc.plot(title="processed")
+
+
+
+
         except Exception as e:
             print(f"An error occurred while processing the light curve: {e}")
             
@@ -144,6 +160,8 @@ class LightCurveProcessor:
                 print(f"Error: The file provided at {file} is not a TESS lightcurve file.")
         except Exception as e:
             print(f"An error occurred while displaying the file {file}: {e}")
+
+
 
 # Example usage
 if __name__ == "__main__":

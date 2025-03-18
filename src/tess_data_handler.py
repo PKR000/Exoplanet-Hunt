@@ -187,3 +187,20 @@ def save_state(temp_range, dist_range, analyzed_tic_ids, filename='saved_state.j
     with open(filename, 'w') as file:
         json.dump(state, file, indent=4)
 
+def load_state(filename='saved_state.json'):
+
+    filepath = os.path.join("logs", filename)    
+    if os.path.exists(filepath):
+        with open(filepath, 'r') as file:
+            existing_state = json.load(file)
+            
+            existing_temp_range = existing_state['temperature_range']
+            existing_dist_range = existing_state['distance_range']
+            analyzed_tic_ids = existing_state['analyzed_tic_ids']
+            
+            return existing_temp_range, existing_dist_range, analyzed_tic_ids
+    
+    else:
+        print("No save file found.")
+        return None, None, []
+
