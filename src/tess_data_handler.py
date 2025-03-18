@@ -12,6 +12,77 @@ class TESSDataHandler:
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)
 
+
+    def load_state(filename='saved_state.json'):
+        """
+        Loads the saved state from a JSON file.
+
+        Args:
+            filename (str): The name of the JSON file to load the state from.
+
+        Returns:
+            tuple: A tuple containing the temperature range, distance range, and analyzed TIC IDs.
+                   If the file does not exist, returns (None, None, []).
+        """
+        filepath = os.path.join(os.getcwd(), "logs", filename)
+        if os.path.exists(filepath):
+            with open(filepath, 'r') as file:
+                existing_state = json.load(file)
+
+                existing_temp_range = existing_state['temperature_range']
+                existing_dist_range = existing_state['distance_range']
+                analyzed_tic_ids = existing_state['analyzed_tic_ids']
+
+                return existing_temp_range, existing_dist_range, analyzed_tic_ids
+
+        else:
+            print("No save file found.")
+            return None, None, []
+
+
+    def save_state(temp_range, dist_range, analyzed_tic_ids, filename='saved_state.json'):
+        """
+        Saves the current state to a JSON file. If the file already exists, it updates the existing state.
+
+        Args:
+            temp_range (tuple): The temperature range to save (low, high).
+            dist_range (tuple): The distance range to save (low, high).
+            analyzed_tic_ids (list): The list of analyzed TIC IDs to save.
+            filename (str): The name of the JSON file to save the state to.
+        """
+        # Initialize state
+        state = {
+            'temperature_range': temp_range,
+            'distance_range': dist_range,
+            'analyzed_tic_ids': analyzed_tic_ids
+        }
+        filepath = os.path.join(os.getcwd(), "logs",filename)
+        # Read existing state if the file exists
+        if os.path.exists(filepath):
+            with open(filepath, 'r') as file:
+                existing_state = json.load(file)
+
+                # Update tested temperature range
+                existing_temp_range = existing_state['temperature_range']
+                state['temperature_range'] = (
+                    min(existing_temp_range[0], temp_range[0]),
+                    max(existing_temp_range[1], temp_range[1])
+                )
+
+                # Update tested distance range
+                existing_dist_range = existing_state['distance_range']
+                state['distance_range'] = (
+                    min(existing_dist_range[0], dist_range[0]),
+                    max(existing_dist_range[1], dist_range[1])
+                )
+
+                # Update analyzed TIC IDs
+                state['analyzed_tic_ids'] = list(set(existing_state['analyzed_tic_ids']).union(set(analyzed_tic_ids)))
+
+        # Write the updated state to the JSON file
+        with open(filepath, 'w') as file:
+            json.dump(state, file, indent=4)
+        
     def search_tess_targets(self, temp_range, dist_range): 
         """
         Searches the TESS Input Catalog (TIC) and returns a list of stars that match the criteria.
@@ -143,64 +214,10 @@ if __name__ == "__main__":
 '''
 
 
-#sorry David, didnt know where to put this code yet.
-#also im keeping a to-do list here for now
+
+#im keeping a to-do list here for now
         
-#to-do: we need a score function that tells us the chance we found an exoplanet.
-#to-do: we need a function that increments through temp/dist ranges and downloads relevant data.
-#to-do: we need to log tested stars, and ranges we have gone through.
-#to-do: we might consider saving graphs of processed data, once we have confidence in the output.
-
-#this is entirely untested
-def save_state(temp_range, dist_range, analyzed_tic_ids, filename='saved_state.json'):
-    
-    # Initialize state
-    state = {
-        'temperature_range': temp_range,
-        'distance_range': dist_range,
-        'analyzed_tic_ids': analyzed_tic_ids
-    }
-    
-    # Read existing state if the file exists
-    if os.path.exists(filename):
-        with open(filename, 'r') as file:
-            existing_state = json.load(file)
-            
-            # Update tested temperature range
-            existing_temp_range = existing_state['temperature_range']
-            state['temperature_range'] = (
-                min(existing_temp_range[0], temp_range[0]),
-                max(existing_temp_range[1], temp_range[1])
-            )
-            
-            # Update tested distance range
-            existing_dist_range = existing_state['distance_range']
-            state['distance_range'] = (
-                min(existing_dist_range[0], dist_range[0]),
-                max(existing_dist_range[1], dist_range[1])
-            )
-            
-            # Update analyzed TIC IDs
-            state['analyzed_tic_ids'] = list(set(existing_state['analyzed_tic_ids']).union(set(analyzed_tic_ids)))
-
-    # Write the updated state to the JSON file
-    with open(filename, 'w') as file:
-        json.dump(state, file, indent=4)
-
-def load_state(filename='saved_state.json'):
-
-    filepath = os.path.join("logs", filename)    
-    if os.path.exists(filepath):
-        with open(filepath, 'r') as file:
-            existing_state = json.load(file)
-            
-            existing_temp_range = existing_state['temperature_range']
-            existing_dist_range = existing_state['distance_range']
-            analyzed_tic_ids = existing_state['analyzed_tic_ids']
-            
-            return existing_temp_range, existing_dist_range, analyzed_tic_ids
-    
-    else:
-        print("No save file found.")
-        return None, None, []
-
+    #to-do: we need a score function that tells us the chance we found an exoplanet.
+    #to-do: we need a function that increments through temp/dist ranges and downloads relevant data.
+#this is possibly done: we need to log tested stars, and ranges we have gone through.
+    #to-do: we might consider saving graphs of processed data, once we have confidence in the output.
